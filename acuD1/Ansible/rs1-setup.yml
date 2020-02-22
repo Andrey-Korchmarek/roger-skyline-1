@@ -1,0 +1,16 @@
+---
+- hosts: local
+  connection: local
+  become: yes
+  become_user: root
+  roles:
+      - netplan
+      - openssh
+      - netdata
+      - nginx
+      - postfix
+      - ufw
+      - fail2ban
+      - cron_script
+      - parted
+

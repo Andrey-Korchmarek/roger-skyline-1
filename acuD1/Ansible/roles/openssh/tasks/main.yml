@@ -1,0 +1,40 @@
+---
+- name: Installing OpenSSH Server
+  ignore_errors: yes
+  apt:
+      pkg: openssh-server
+      state: present
+      update_cache : true
+
+- name: Starting OpenSSH Server
+  service:
+        name: ssh
+        enabled: yes
+        state: started
+
+- name: Creating ~/.ssh
+  file:
+      path: /home/arsciand/.ssh
+      state: directory
+      owner: arsciand
+      group: arsciand
+
+- name: Adding authorized_keys file with rs1-key.pub
+  copy:
+      src: authorized_keys
+      dest: /home/arsciand/.ssh/
+      owner: arsciand
+      group: arsciand
+
+- name: Modifying /etc/ssh/sshd_config
+  replace:
+      path: /etc/ssh/sshd_config
+      regexp: "{{ item.regexp }}"
+      replace: "{{ item.replace }}"
+  with_items:
+      - {regexp: '#Port 22', replace: 'Port 2222'}
+      - {regexp: '#PermitRootLogin prohibit-password', replace: 'PermitRootLogin no'}
+      - {regexp: '#PasswordAuthentication yes', replace: 'PasswordAuthentication no'}
+  notify:
+      - Restarts OpenSSH Server
+

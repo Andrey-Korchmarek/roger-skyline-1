@@ -1,2 +1,12 @@
+Заходим под root:
+$ su
+Устанавливаем sudo и vim
+$ apt install sudo vim -y
+
+ редактируешь файл vim /etc/sudoers
+# User privilege specification
+root    ​ALL=(ALL:ALL) ALL
+user         ALL=(ALL:ALL) ALL
+
 apt-get update -y && apt-get upgrade -y
 apt-get install sudo vim ufw portsentry fail2ban apache2 mailutils -y
